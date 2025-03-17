@@ -48,6 +48,7 @@
 #include <deque>
 #include <stack>
 #include <unistd.h>
+#include <fstream>
 
 #include "hash_table.hpp"
 #include "space_efficient_vector.hpp"
@@ -1043,6 +1044,18 @@ void parse(
 
     // Open output file.
     std::FILE *f = utils::file_open(output_filename, "w");
+
+    // added
+    std::ofstream out(output_filename + ".txt");
+    for (std::uint64_t i = 0; i < parsing->size(); ++i) {
+      if(static_cast<unsigned long long>((*parsing)[i].m_len) == 1){
+        out << static_cast<unsigned long long>((*parsing)[i].m_char) << "," << 0 << "," << static_cast<unsigned long long>((*parsing)[i].m_len) << std::endl;
+      }
+      else{
+        out << static_cast<unsigned long long>((*parsing)[i].m_char) << "," << static_cast<unsigned long long>((*parsing)[i].m_link) << "," << static_cast<unsigned long long>((*parsing)[i].m_len) << std::endl;
+      }
+    }
+    out.close();
 
     // Write the header.
     {
